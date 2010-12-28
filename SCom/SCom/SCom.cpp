@@ -6,34 +6,46 @@
 #include <Windows.h>
 #include <tchar.h>
 
+#include "ComPort.h"
+
+#include <iostream>
+
+using namespace std;
+
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	HANDLE hCom;
-	LPWCH  pcComPort = _T("COM1");
-	DCB    dcb;
+	CComPort comPort;
 
-	DWORD bytesWritten;	
-	BYTE  i1;
+	comPort.Open(_T("COM1"));
+	comPort.SetBaudRate(9600);
 
-	hCom = CreateFile(pcComPort, GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-	if (INVALID_HANDLE_VALUE == hCom) {
-		printf("Unable to open COM1 port.\n");
-		return 1;
-	}
+	// do somethimg interesting here
+	char ch = '\0';
+	do {
+		// read character from the input
+		cout << "Enter a character to send to COM port ('q' to exit): ";
+		cin >> &ch;
 
-	GetCommState(hCom, &dcb);
-	dcb.ByteSize = 8;
-	SetCommState(hCom, &dcb);
-	printf("COM1 baud rate is %d.\n", dcb.BaudRate);
+		// try to send it to the COM port
+		if (comPort.SendByte(ch)) {
+			cout << "Failed to send a byte to the COM port" << endl;
+			break;
+		}
 
-	while (true) {
-		printf("Enter value to be outputed at COM1 port:");
-		scanf("%du", &i1);
-		WriteFile(hCom, &i1, sizeof(i1), &bytesWritten, NULL);
-	}
+		// try to get one byte from the COM port
+		if (comPort.RecvByte(reinterpret_cast<BYTE*>(&ch))) {
+			cout << "Failed to receive a byte from the COM port" << endl;
+			break;
+		}
 
-	CloseHandle(hCom);
+		// write the received character to the output
+		cout << "Character '" << ch << "' has been received from the COM port" << endl;
+
+	} while ('q' != ch);
+
+	cout << "Close COM port" << endl;
+	comPort.Close();
 
 	return 0;
 }
