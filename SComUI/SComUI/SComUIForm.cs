@@ -16,9 +16,9 @@ namespace SComUI
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void SComUIFrom_Load(object sender, EventArgs e)
         {
-
+            this.Text = "Loaded!";
         }
     }
 }

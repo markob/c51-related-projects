@@ -37,7 +37,7 @@
             this.ClientSize = new System.Drawing.Size(292, 266);
             this.Name = "SComUIForm";
             this.Text = "Microcontroller Connector";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.SComUIFrom_Load);
             this.ResumeLayout(false);
 
         }
