@@ -3,8 +3,11 @@
 *.sln
 *.vcproj*
 *.vcxproj*
+*.csproj*
 *.ncb
 *.suo
+*.cache
+*.exe
 
 SCom/debug/*
 SCom/release/*
@@ -13,5 +16,8 @@ SCom/Release/*
 SCom/SCom/Debug/*
 SCom/SCom/Release/*
 SCom/ipch/*
+
+SComUI/SComUI/obj/*
+SComUI/SComUI/bin/*
 
 targetver.h
