@@ -1,0 +1,11 @@
+*.sdf
+*.sln
+*.vcproj*
+*.vcxproj*
+*.ncb
+
+SCom/debug/*
+SCom/release/*
+SCom/SCom/Debug/*
+SCom/SCom/Release/*
+
