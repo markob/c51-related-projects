@@ -15,4 +15,9 @@ typedef UINT8 BOOLEAN;
 #define FALSE 0
 #define TRUE (!FALSE)
 
+typedef bit BBOOLEAN;
+
+#define BFALSE 0
+#define BTRUE 1
+
 #endif /* _TYPES_H_ */

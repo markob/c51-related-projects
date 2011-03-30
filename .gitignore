@@ -8,6 +8,7 @@
 *.suo
 *.cache
 *.exe
+*.bak
 
 SCom/debug/*
 SCom/release/*

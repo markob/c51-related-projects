@@ -3,6 +3,8 @@
 
 #include "fsm.h"
 
-void _fsm_init_clock_(void);
+#define FSM_CLOCK_TICKS_PER_SAMPLE 1000
+
+void _fsm_clock__init_(void);
 
 #endif /* _CLOCK_H_ */
