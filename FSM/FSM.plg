@@ -1,0 +1,74 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+X:\truecrypt32\works\c51-related-projects\FSM\FSM.uvproj
+Project File Date:  03/30/2011
+
+<h2>Output:</h2>
+Build target 'AT89S8252'
+assembling STARTUP.A51...
+linking...
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  ?C_START
+    MODULE:  STARTUP.obj (?C_STARTUP)
+    ADDRESS: 000DH
+Program Size: data=9.0 xdata=0 code=15
+"FSM" - 0 Error(s), 2 Warning(s).
+Build target 'AT89S8252'
+compiling main.c...
+main.c(3): error C309: bad or missing filename
+main.c(3): warning C318: can't open file ''
+main.c(3): error C141: syntax error near ''
+compiling fsm.c...
+compiling clock.c...
+Target not created
+Build target 'AT89S8252'
+compiling main.c...
+main.c(5): error C141: syntax error near ''
+compiling fsm.c...
+Target not created
+Build target 'AT89S8252'
+compiling main.c...
+compiling fsm.c...
+fsm.c(7): error C141: syntax error near '}'
+fsm.c(10): error C141: syntax error near '{'
+compiling clock.c...
+clock.c(4): error C231: '_fsm_init_clock_': redefinition
+clock.c(6): error C231: '_fsm_init_clock_': redefinition
+Target not created
+Build target 'AT89S8252'
+compiling fsm.c...
+fsm.c(9): error C141: syntax error near '}'
+fsm.c(16): error C202: '_fsm_tasks_': undefined identifier
+fsm.c(17): error C202: '_fsm_tasks_': undefined identifier
+compiling clock.c...
+clock.c(4): error C231: '_fsm_init_clock_': redefinition
+clock.c(6): error C231: '_fsm_init_clock_': redefinition
+Target not created
+Build target 'AT89S8252'
+compiling fsm.c...
+fsm.c(9): error C141: syntax error near '}'
+compiling clock.c...
+clock.c(4): error C231: '_fsm_init_clock_': redefinition
+clock.c(6): error C231: '_fsm_init_clock_': redefinition
+Target not created
+Build target 'AT89S8252'
+compiling fsm.c...
+fsm.c(8): error C247: non-address/-constant initializer
+compiling clock.c...
+clock.c(4): error C231: '_fsm_init_clock_': redefinition
+clock.c(6): error C231: '_fsm_init_clock_': redefinition
+Target not created
+Build target 'AT89S8252'
+compiling fsm.c...
+compiling clock.c...
+linking...
+Program Size: data=13.0 xdata=0 code=188
+"FSM" - 0 Error(s), 0 Warning(s).
+Clean started: Project: 'FSM'
+   deleting intermediate output files for target 'AT89S8252'
