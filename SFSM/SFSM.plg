@@ -1,0 +1,11 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+X:\truecrypt32\works\c51-related-projects\SFSM\SFSM.uvproj
+Project File Date:  03/31/2011
+
+<h2>Output:</h2>
+Clean started: Project: 'SFSM'
+   deleting intermediate output files for target 'AT89S8252'

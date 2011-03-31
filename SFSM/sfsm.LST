@@ -1,0 +1,21 @@
+C51 COMPILER V9.03   SFSM                                                                  03/31/2011 13:31:16 PAGE 1   
+
+
+C51 COMPILER V9.03, COMPILATION OF MODULE SFSM
+OBJECT MODULE PLACED IN sfsm.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sfsm.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "sfsm.h"
+   2          
+   3          void main(void)
+   4          {
+   5   1              
+   6   1      
+   7   1              /* run main event processing loop */
+   8   1              SFSM_DO_MAIN_LOOP()
+   9   1      }
+*** ERROR C233 IN LINE 9 OF sfsm.c: 'sfsm_lbl__proc_state_change': undefined label
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
