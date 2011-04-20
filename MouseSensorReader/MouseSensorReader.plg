@@ -1,0 +1,109 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+C:\cygwin\home\petro\works\c51-related-projects\MouseSensorReader\MouseSensorReader.uvproj
+Project File Date:  04/19/2011
+
+<h2>Output:</h2>
+Build target 'AT89S8252'
+assembling STARTUP.A51...
+compiling mouse.c...
+MOUSE.C(21): error C202: 'sdio': undefined identifier
+MOUSE.C(41): error C202: 'sdio': undefined identifier
+MOUSE.C(48): error C202: 'returne': undefined identifier
+MOUSE.C(48): error C141: syntax error near 'delta_y'
+MOUSE.C(63): error C202: 'x': undefined identifier
+MOUSE.C(64): error C202: 'y': undefined identifier
+MOUSE.C(66): error C202: 'x': undefined identifier
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(17): warning C206: 'init_serial_port': missing function-prototype
+MOUSE.C(19): warning C206: 'init_spi_port': missing function-prototype
+MOUSE.C(21): warning C206: 'init_optical_sensor': missing function-prototype
+MOUSE.C(26): error C202: 'x': undefined identifier
+MOUSE.C(28): error C202: 'y': undefined identifier
+MOUSE.C(31): error C202: 'x': undefined identifier
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(22): warning C206: 'init_serial_port': missing function-prototype
+MOUSE.C(24): warning C206: 'init_spi_port': missing function-prototype
+MOUSE.C(26): warning C206: 'init_optical_sensor': missing function-prototype
+MOUSE.C(31): error C202: 'x': undefined identifier
+MOUSE.C(33): error C202: 'y': undefined identifier
+MOUSE.C(36): error C202: 'x': undefined identifier
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(22): warning C206: 'init_serial_port': missing function-prototype
+MOUSE.C(24): warning C206: 'init_optical_sensor': missing function-prototype
+MOUSE.C(29): error C202: 'x': undefined identifier
+MOUSE.C(31): error C202: 'y': undefined identifier
+MOUSE.C(34): error C202: 'x': undefined identifier
+MOUSE.C(40): error C231: 'init_serial_port': redefinition
+MOUSE.C(42): error C231: 'init_serial_port': redefinition
+MOUSE.C(46): error C231: 'init_optical_sensor': redefinition
+MOUSE.C(47): error C231: 'init_optical_sensor': redefinition
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(32): error C202: 'x': undefined identifier
+MOUSE.C(34): error C202: 'y': undefined identifier
+MOUSE.C(37): error C202: 'x': undefined identifier
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(60): warning C206: 'spi_send_byte': missing function-prototype
+MOUSE.C(60): error C267: 'spi_send_byte': requires ANSI-style prototype
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(86): error C202: 'spi_clk_pin': undefined identifier
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(84): error C141: syntax error near 'sbit'
+MOUSE.C(84): error C202: 'spi_clk_pin': undefined identifier
+MOUSE.C(85): error C141: syntax error near 'sbit'
+MOUSE.C(85): error C202: 'spi_data_pin': undefined identifier
+MOUSE.C(87): error C141: syntax error near 'UINT8'
+MOUSE.C(87): error C202: 'count': undefined identifier
+MOUSE.C(89): error C202: 'count': undefined identifier
+MOUSE.C(90): error C202: 'spi_clk_pin': undefined identifier
+Target not created
+Build target 'AT89S8252'
+compiling mouse.c...
+MOUSE.C(92): warning C209: '_delay': too few actual parameters
+MOUSE.C(106): warning C209: '_delay': too few actual parameters
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SPI_WRITE_BYTE?MOUSE
+Program Size: data=33.1 xdata=0 code=1235
+"MouseSensorReader" - 0 Error(s), 3 Warning(s).
+Build target 'AT89S8252'
+compiling mouse.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SPI_WRITE_BYTE?MOUSE
+Program Size: data=33.1 xdata=0 code=1243
+"MouseSensorReader" - 0 Error(s), 1 Warning(s).
+Build target 'AT89S8252'
+compiling mouse.c...
+linking...
+Program Size: data=32.1 xdata=0 code=1248
+"MouseSensorReader" - 0 Error(s), 0 Warning(s).
+Build target 'AT89S8252'
+compiling mouse.c...
+linking...
+Program Size: data=32.1 xdata=0 code=1256
+"MouseSensorReader" - 0 Error(s), 0 Warning(s).
+Build target 'AT89S8252'
+compiling mouse.c...
+linking...
+Program Size: data=32.1 xdata=0 code=1266
+"MouseSensorReader" - 0 Error(s), 0 Warning(s).
+Clean started: Project: 'MouseSensorReader'
+   deleting intermediate output files for target 'AT89S8252'

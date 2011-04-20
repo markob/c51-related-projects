@@ -3,36 +3,7 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
-X:\truecrypt32\works\c51-related-projects\FSM\FSM.uvproj
-Project File Date:  03/30/2011
+C:\cygwin\home\petro\works\c51-related-projects\FSM\FSM.uvproj
+Project File Date:  03/31/2011
 
 <h2>Output:</h2>
-Build target 'AT89S8252'
-assembling STARTUP.A51...
-compiling main.c...
-compiling fsm.c...
-compiling clock.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FSM_CHANGESTATE?FSM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?MAIN?FSM
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_FSM_CLOCK__CLOCK_?CLOCK
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  _FSM_CLOCK__INIT_
-    MODULE:  fsm.obj (FSM)
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  _FSM_CLOCK__INIT_
-    MODULE:  fsm.obj (FSM)
-    ADDRESS: 00F6H
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  MAIN
-    MODULE:  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  MAIN
-    MODULE:  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
-    ADDRESS: 001BH
-Program Size: data=24.1 xdata=0 code=264
-creating hex file from "FSM"...
-"FSM" - 0 Error(s), 7 Warning(s).

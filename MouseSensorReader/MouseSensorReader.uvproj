@@ -43,10 +43,10 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\</OutputDirectory>
-          <OutputName>FSM</OutputName>
+          <OutputName>MouseSensorReader</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>1</CreateHexFile>
+          <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\</ListingPath>
@@ -213,7 +213,7 @@
               <RCB>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0x0</Size>
               </RCB>
               <RXB>
                 <Type>0</Type>
@@ -352,34 +352,9 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>mouse.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>lib</GroupName>
-          <Files>
-            <File>
-              <FileName>fsm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\fsm.c</FilePath>
-            </File>
-            <File>
-              <FileName>clock.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\clock.c</FilePath>
-            </File>
-            <File>
-              <FileName>clock.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\clock.h</FilePath>
-            </File>
-            <File>
-              <FileName>fsm.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\fsm.h</FilePath>
+              <FilePath>.\mouse.c</FilePath>
             </File>
             <File>
               <FileName>types.h</FileName>
