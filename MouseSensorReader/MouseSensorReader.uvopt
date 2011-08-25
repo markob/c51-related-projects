@@ -188,8 +188,8 @@
       <Focus>0</Focus>
       <ColumnNumber>22</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>71</TopLine>
-      <CurrentLine>71</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>7</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\mouse.c</PathWithFileName>
       <FilenameWithoutPath>mouse.c</FilenameWithoutPath>
@@ -214,10 +214,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>13</ColumnNumber>
+      <ColumnNumber>30</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>8</TopLine>
-      <CurrentLine>8</CurrentLine>
+      <TopLine>31</TopLine>
+      <CurrentLine>61</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\OptiMouse.c</PathWithFileName>
       <FilenameWithoutPath>OptiMouse.c</FilenameWithoutPath>
@@ -228,10 +228,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>34</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>17</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\OptiMouse.h</PathWithFileName>
       <FilenameWithoutPath>OptiMouse.h</FilenameWithoutPath>
@@ -242,10 +242,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>71</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>10</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ADNS2610_DRV.h</PathWithFileName>
       <FilenameWithoutPath>ADNS2610_DRV.h</FilenameWithoutPath>
@@ -257,7 +257,7 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>3</ActiveTab>
+      <ActiveTab>4</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\mouse.c</Name>
@@ -267,9 +267,9 @@
         </Doc>
         <Doc>
           <Name>.\OptiMouse.c</Name>
-          <ColumnNumber>75</ColumnNumber>
+          <ColumnNumber>30</ColumnNumber>
           <TopLine>31</TopLine>
-          <CurrentLine>63</CurrentLine>
+          <CurrentLine>61</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\OptiMouse.h</Name>
@@ -285,9 +285,9 @@
         </Doc>
         <Doc>
           <Name>.\ADNS2610_DRV.h</Name>
-          <ColumnNumber>71</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>10</CurrentLine>
+          <CurrentLine>20</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
