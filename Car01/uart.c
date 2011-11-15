@@ -21,12 +21,17 @@ static bit UART_isOutputQueueFull = 0;
 
 void UART_Init(void)
 {
+	// setup UART mode to 8N1 with timer 1 sync
 	SCON  = 0x50;
+	// setup timer 1 to UART mode
 	TH1	  = 0xFF;
 	TMOD |= 0x20;
+	// run timer 1
 	TR1	  = 1;
+	EA    = 1;
 
 #if UART_USE_SYNC_API != 1
+	// initialize all stuff for async UART functionality
 	UART_inputQueueReadIndex = 0;
 	UART_inputQueueWriteIndex = 0;
 	UART_outputQueueReadIndex = 0;
