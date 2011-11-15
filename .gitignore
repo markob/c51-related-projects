@@ -22,3 +22,14 @@ SComUI/SComUI/obj/*
 SComUI/SComUI/bin/*
 
 targetver.h
+
+*.hex
+*.obj
+*.LST
+*.__i
+*.plg
+*.lnp
+*.uvopt
+*.SRC
+*.ls1
+*._ia

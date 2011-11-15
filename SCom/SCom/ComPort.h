@@ -27,7 +27,7 @@ public:
 	BOOL RecvByte(BYTE* byte);
 
 	// API's to send/receive more data at once
-	DWORD SendData(BYTE* data, DWORD size);
+	DWORD SendData(const BYTE* data, DWORD size);
 	DWORD RecvData(BYTE* data, DWORD size);
 
 private:

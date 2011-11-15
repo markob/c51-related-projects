@@ -82,7 +82,7 @@ BOOL CComPort::RecvByte(BYTE* byte)
 }
 
 
-DWORD CComPort::SendData(BYTE* data, DWORD size)
+DWORD CComPort::SendData(const BYTE* data, DWORD size)
 {
 	BOOL rv = TRUE;
 	DWORD bytesWritten = 0;
