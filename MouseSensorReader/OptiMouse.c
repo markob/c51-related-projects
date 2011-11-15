@@ -1,3 +1,7 @@
+#include "OptiMouse.h"
+#include "ADNS2610_DRV.h"
+#include "types.h"
+
 /******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -6,13 +10,17 @@
 extern bit _SCLK_PIN; /* points to the pin connected to SCLK optical sensor port */
 extern bit _SDIO_PIN; /* points to the pin connected to SDIO optical sensor port */
 
+#define OPTI_MOUSE_PROC_RAW_IMAGE 1
+
 #if OPTI_MOUSE_PROC_RAW_IMAGE == 1
 /* Raw image data storage */
 UINT8 _RAW_IMAGE_DATA[RAW_IMAGE_SIZE*RAW_IMAGE_SIZE];
 #endif
 
 static UINT8 opti_mouse__read_register(UINT8 address);
-static void opti_mouse__write_register(UINT8 address, UINT8 data);
+static void opti_mouse__write_register(UINT8 address, UINT8 byte);
+
+static void delay_ms(UINT16 delay);
 
 #define LOW 	0
 #define HIGH	1
@@ -61,13 +69,13 @@ UINT8* opti_mouse__get_raw_image( void )
 	opti_mouse__raw_image_mode_on();
 
 	/* read raw image data byte by byte */
-	for (; i < RAW_IMAGE_DATA*RAW_IMAGE_DATA; i++) {
+	for (; i < RAW_IMAGE_SIZE*RAW_IMAGE_SIZE; i++) {
 		_RAW_IMAGE_DATA[i] = opti_mouse__read_register(i + _RAW_IMAGE_DATA_OFFSET);									   	
 	}
 
 	opti_mouse__raw_image_mode_off();
 
-	return _IMAGE_RAW_DATA;
+	return _RAW_IMAGE_DATA;
 }
 #endif
 
@@ -82,7 +90,6 @@ static UINT8 opti_mouse__read_register(UINT8 address)
 	UINT8 byte 	= 0;
 	
 	/* write the address of the register we want to read */
-	pinMode (_SDIO_PIN, OUTPUT);
 	for (; i >= 0; i--)
 	{
 		/* todo: may be some delay will be useful here... */ 
@@ -104,7 +111,7 @@ static UINT8 opti_mouse__read_register(UINT8 address)
 
    		/* set SDIO pin into 'read' mode */
 		_SDIO_PIN = 1;
-		byte |= _SDIO_PIN << i;
+		byte |= ((UINT8) _SDIO_PIN) << i;
 
 		_SCLK_PIN = HIGH;
 	}
@@ -116,7 +123,7 @@ static UINT8 opti_mouse__read_register(UINT8 address)
 
 static void opti_mouse__write_register(UINT8 address, UINT8 byte)
 {
-	INT i = 7;
+	INT8 i = 7;
 	
 	/* set MSB high, to indicate write operation */
 	address |= 0x80;

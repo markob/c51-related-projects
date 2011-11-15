@@ -11,8 +11,8 @@
 #define _RAW_IMAGE_MODE_ON		0x01	/* optical mouse sensor mode on value */
 #define _RAW_IMAGE_MODE_OFF		0x00	/* optical mouse sensor mode off value */
 
-#define opti_mouse__raw_image_mode_on() opti_mouse__write_register(_RAW_IMAGE_MODE_REG, 0x00); 
-#define opti_mouse__raw_image_mode_on() opti_mouse__write_register(_RAW_IMAGE_MODE_REG, ); 
+#define opti_mouse__raw_image_mode_on() opti_mouse__write_register(_RAW_IMAGE_MODE_REG, _RAW_IMAGE_MODE_ON); 
+#define opti_mouse__raw_image_mode_off() opti_mouse__write_register(_RAW_IMAGE_MODE_REG, _RAW_IMAGE_MODE_OFF); 
 
 #endif
 

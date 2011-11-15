@@ -2,6 +2,7 @@
 #include <reg52.h>
 
 #include "types.h"
+#include "ADNS2610_DRV.h"
 
 sbit SPI_SCK = P1^0;
 sbit SPI_SIO = P1^1;
@@ -9,19 +10,10 @@ sbit SPI_SIO = P1^1;
 
 /* Internal function declarations  */
 
-void init_serial_port(void);
-void init_optical_sensor(void);
+static void init_serial_port(void);
+static void init_optical_sensor(void);
 
-UINT8 get_x(void);
-UINT8 get_y(void);
-
-UINT8 spi_read_byte(UINT8 addr);
-void spi_write_byte(UINT8 addr, UINT8 byte);
-
-void spi_send_byte(UINT8 byte);
-UINT8 spi_recv_byte(void);
-
-void delay(UINT16 count);
+static void delay(UINT16 count);
 
 /* Implemenattion */
 
@@ -31,19 +23,19 @@ void main (void)
 	/* init serial port (UART) */
 	init_serial_port();
 	/* init optical sensor */
-	init_optical_sensor();
+	opti_mouse__start();
 
 	/* start main system loop here */
 	while (1) {
-		UINT8 x, y;
+		UINT8 dx, dy;
 
 		/* get delta x from optical sensor */
-		x = get_x();
+		dx = opti_mouse__get_dx();
 		/* get delta y from optical sensor */
-		y = get_y();
+		dy = opti_mouse__get_dy();
 
 		/* send the result to PC via UART */
-		printf ("x=%c, y=%c", x, y);
+		printf ("x=%c, y=%c", dx, dy);
 	}
 }
 
@@ -56,14 +48,8 @@ void init_serial_port(void)
 	TI = 1;	
 }
 
-/* Initializes optical sensor for work */
-void init_optical_sensor()
-{
-	/* set mouse mode to normal */
-	spi_write_byte(0x00, 0x00);
-}
-
 /* Reads byte with the specific address from SPI */
+#if 0
 UINT8 spi_read_byte(UINT8 addr)
 {
 	UINT8 byte = 0x00;
@@ -135,6 +121,7 @@ UINT8 get_y(void)
 {
 	return spi_read_byte(0x03);
 }
+#endif
 
 /* Just simple delay. Depends on external crystal frequency */
 void delay(UINT16 count)
