@@ -65,16 +65,18 @@ static void UART_eventHandler(void) interrupt 4 using 3
 
 void UART_SendByte(uint8_t byte)
 {
+	// check uthe output queue state: it requires additional processing when it's empty
 	bit isQueueEmpty = !UART_isOutputQueueFull && (UART_outputQueueWriteIndex == UART_outputQueueReadIndex);
+	
 	// put byte to send to the output queue
 	while (UART_isOutputQueueFull);
 	UART_outputQueue[UART_outputQueueWriteIndex++] = byte;
 	UART_outputQueueWriteIndex %= UART_OUTPUT_QUEUE_SIZE;
-	if (UART_outputQueueWriteIndex == UART_outputQueueReadIndex) {
-		UART_isOutputQueueFull = 1;
-	} else if (isQueueEmpty) {
+	if (isQueueEmpty) {
 		// queue is empty, so we need to invoke first transfer
 		TI = 1;
+	} else if (UART_outputQueueWriteIndex == UART_outputQueueReadIndex) {
+		UART_isOutputQueueFull = 1;
 	}
 }
 
@@ -83,6 +85,7 @@ uint16_t UART_RecvByte(void)
 	uint8_t byteReceived = 0x00;
 
 	UART_inputQueueReadIndex %= UART_INPUT_QUEUE_SIZE;
+	// here we just check that the input queue is not empty and if it's true, we just take one byte from it
 	if (UART_isInputQueueFull || UART_inputQueueWriteIndex != UART_inputQueueReadIndex) {
 		byteReceived = UART_inputQueue[UART_inputQueueReadIndex++];
 		UART_isInputQueueFull = 0;
