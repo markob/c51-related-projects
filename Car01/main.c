@@ -17,7 +17,8 @@ void main(void)
 	PWM_Init();
 
 	// setup PWM
-	PWM_setPinSignalDensity(13, 0xFE);
+	PWM_setPinSignalDensity(14, 0);
+	PWM_setPinSignalDensity(2, 1);
 
 	while (TRUE) {
 		// input command processing

@@ -6,7 +6,7 @@
 
 #define CRYSTAL_FREQUENCY 14765400
 
-#define PWM_PINS_NUMBER 1
+#define PWM_PINS_NUMBER 2
 #define PWM_OUTPUT_PORT P1
 
 #endif

@@ -1,5 +1,6 @@
 #include "pwm.h"
 #include <reg51.h>
+#include <string.h>
 
 /*
  * Description of the PWM generator algorithm
@@ -23,41 +24,42 @@
  * interrupted by PWM module ISR.
  */
 
-#define PWM_TIMER0_REG_TH ((0xFFFF - CRYSTAL_FREQUENCY/32000/12 + 1)/256)
-#define PWM_TIMER0_REG_TL ((0xFFFF - CRYSTAL_FREQUENCY/32000/12 + 1)%256)
+#define PWM_TIMER0_REG_TH ((0xFFFF - CRYSTAL_FREQUENCY/3200/12 + 1)/256)
+#define PWM_TIMER0_REG_TL ((0xFFFF - CRYSTAL_FREQUENCY/3200/12 + 1)%256)
 
 #define PWM_LEVELS_NUMBER 16
 
+static const uint8_t code PWM_masks[] =
+	{0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+
 typedef struct {
-	uint8_t pinMask;
-	uint8_t swCount;
-	uint8_t swCountConf;
+	uint8_t count:5;
+	uint8_t mask:3;
+	//uint8_t active:1;
 } PWM_Target_t;
 
-static PWM_Target_t PWM_pins[PWM_PINS_NUMBER];
+static PWM_Target_t PWM_targets[2*PWM_PINS_NUMBER];
+static PWM_Target_t PWM_targetsConfig[2*PWM_PINS_NUMBER];
 
 static uint8_t PWM_tickCount = 0;
 static uint8_t PWM_nextSwitchCount = 0;
 
-static uint8_t PWM_targetsNumber = 0;
 static uint8_t PWM_activeTargetIndex = 0;
-static uint8_t PWM_isGoingUp = 0;
+static bit PWM_updateIsRequired = 0;
 
 /* Initialize PWM source based on timer 0 */
 void PWM_Init(void)
 {
 	uint8_t i = 0;
 	for (; i < PWM_PINS_NUMBER; i++) {
-		PWM_pins[i].pinMask = 0x01<<i;
-		PWM_OUTPUT_PORT &= ~PWM_pins[i].pinMask;
+//		PWM_targets[i].active = 0;
 	}
 
 	// set PWM stuf
-	PWM_targetsNumber = 0;
 	PWM_tickCount = 0;
 	PWM_nextSwitchCount = 0;
 	PWM_activeTargetIndex = 0;
-	PWM_isGoingUp = 0;
+	PWM_updateIsRequired = 0;
 
 	// setup timer 0 as 16-bit timer
 	TMOD |= 0x01;
@@ -74,49 +76,77 @@ void PWM_Init(void)
 /* All PWM routine functionality is embedded to the PWM timer ISR */
 void PWM_timerHandle(void) interrupt 1 using 2	 
 {
+	PWM_OUTPUT_PORT ^= 0x80;
+
 	// restart timer
 	TH0 = PWM_TIMER0_REG_TH;
 	TL0 = PWM_TIMER0_REG_TL;
 
 	TF0 = 0;
 
-	if (!PWM_tickCount) {
-		// switch to the opposite operation
-		PWM_isGoingUp = ~PWM_isGoingUp;
-
-		if (PWM_isGoingUp) {
-			// here possible updates should be applied
-			uint8_t i;
-			for (i = 0; i < PWM_PINS_NUMBER; i++) {
-				PWM_pins[i].swCount = PWM_pins[i].swCountConf;
-			}
+	if (!PWM_tickCount&&PWM_updateIsRequired) {
+		// here config updates should be applied
+		uint8_t i;
+		for (i = 0; i < 2*PWM_PINS_NUMBER; i++) {
+			PWM_targets[i] = PWM_targetsConfig[i];
 		}
+		PWM_updateIsRequired = 0;
 	}
 
 	// do PWM switch stuff and select next switch target
-	if (PWM_tickCount == PWM_nextSwitchCount) {
-		PWM_OUTPUT_PORT ^= PWM_pins[PWM_activeTargetIndex].pinMask;
-
-		PWM_activeTargetIndex = (PWM_activeTargetIndex + 1)%PWM_PINS_NUMBER;
-		PWM_pins[PWM_activeTargetIndex].swCount = PWM_LEVELS_NUMBER - PWM_pins[PWM_activeTargetIndex].swCount;
-		PWM_nextSwitchCount = PWM_pins[PWM_activeTargetIndex].swCount;
+	while (PWM_tickCount == PWM_nextSwitchCount) {
+		PWM_OUTPUT_PORT ^= PWM_masks[PWM_targets[PWM_activeTargetIndex].mask];
+		PWM_activeTargetIndex = (PWM_activeTargetIndex + 1)%(2*PWM_PINS_NUMBER);
+		PWM_nextSwitchCount = PWM_targets[PWM_activeTargetIndex].count;
 	}
 
 	// update timer tick counts
-	PWM_tickCount = (PWM_tickCount + 1)%PWM_LEVELS_NUMBER;
+	PWM_tickCount = (PWM_tickCount + 1)%(2*PWM_LEVELS_NUMBER);
+
+	PWM_OUTPUT_PORT ^= 0x80;
 }
 
-uint8_t PWM_setPinSignalDensity(uint8_t density, uint8_t outPortMask)
+uint8_t PWM_setPinSignalDensity(uint8_t density, uint8_t pinNumber)
 {
-	uint8_t i = 0;
-	for (; i < PWM_PINS_NUMBER; i++) {
+	uint8_t i, count = PWM_LEVELS_NUMBER - density;
+	uint8_t oldPosition = 0;
+	uint8_t newPosition = 0;
+	PWM_Target_t target;
+
+	target.count = count;
+	target.mask = pinNumber;
+	//target.active = 1;
+
+	for (i = 0; i < PWM_PINS_NUMBER; i++) {
 		// look for unused target slot and initialize it
-		if (PWM_pins[i].pinMask == outPortMask) {
-			// calculate and set switch count here
-			PWM_pins[i].swCountConf = PWM_LEVELS_NUMBER - density - 1;
-			return 0x00;
+		if (PWM_targetsConfig[i].count > count) {
+			newPosition = i;
+		}
+
+		if (PWM_targetsConfig[i].mask == pinNumber) {
+			oldPosition = i;
 		}
 	}
 
-	return 0x01;
+	if (oldPosition > newPosition) {
+		for (i = oldPosition; i > newPosition; i--) {
+			PWM_targetsConfig[i] = PWM_targetsConfig[i - 1];
+		}
+	} else if (oldPosition < newPosition) {
+		for (i = oldPosition; i < newPosition; i++) {
+			PWM_targetsConfig[i] = PWM_targetsConfig[i + 1];
+		}
+	} else {
+		i = oldPosition;
+	}
+
+	PWM_targetsConfig[i] = target;
+
+	for (i = 0; i < PWM_PINS_NUMBER; i++) {
+		target = PWM_targetsConfig[PWM_PINS_NUMBER - i - 1];
+		target.count = 2*PWM_LEVELS_NUMBER - target.count;
+		memcpy(PWM_targetsConfig + PWM_PINS_NUMBER + i, &target, sizeof(target));
+	}
+
+	PWM_updateIsRequired = 1;
 }
