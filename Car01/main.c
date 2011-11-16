@@ -2,21 +2,28 @@
 #include "types.h"
 
 #include "uart.h"
+#include "pwm.h"
 
 uint8_t ProcessCommand(void);
 
 void main(void)
 {
 	// init UART and send initial 'AT' to the BlueCore
-	UART_Init();
-	UART_SendByte('A');
-	UART_SendByte('T');
+//	UART_Init();
+//	UART_SendByte('A');
+//	UART_SendByte('T');
+
+	// initialize PWM module
+	PWM_Init();
+
+	// setup PWM
+	PWM_setPinSignalDensity(13, 0xFE);
 
 	while (TRUE) {
 		// input command processing
-		ProcessCommand();
+		//ProcessCommand();
 
-		UART_SendByte('K');
+		//UART_SendByte('K');
 	}
 }
 

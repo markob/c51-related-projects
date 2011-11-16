@@ -36,8 +36,8 @@ void UART_Init(void)
 	UART_inputQueueWriteIndex = 0;
 	UART_outputQueueReadIndex = 0;
 	UART_outputQueueWriteIndex = 0;
-	UART_isInputQueueFull = 1;
-	UART_isOutputQueueFull = 1;
+	UART_isInputQueueFull = 0;
+	UART_isOutputQueueFull = 0;
 #endif
 }
 
