@@ -29,13 +29,11 @@
 
 #define PWM_LEVELS_NUMBER 16
 
-static const uint8_t code PWM_masks[] =
-	{0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+static const uint8_t code PWM_masks[] =	{ 0x01, 0x02 };
 
 typedef struct {
 	uint8_t count:5;
 	uint8_t mask:3;
-	//uint8_t active:1;
 } PWM_Target_t;
 
 static PWM_Target_t PWM_targets[2*PWM_PINS_NUMBER];
@@ -92,13 +90,29 @@ void PWM_timerHandle(void) interrupt 1 using 2
 		}
 		PWM_updateIsRequired = 0;
 	}
-
+	
 	// do PWM switch stuff and select next switch target
-	while (PWM_tickCount == PWM_nextSwitchCount) {
-		PWM_OUTPUT_PORT ^= PWM_masks[PWM_targets[PWM_activeTargetIndex].mask];
-		PWM_activeTargetIndex = (PWM_activeTargetIndex + 1)%(2*PWM_PINS_NUMBER);
-		PWM_nextSwitchCount = PWM_targets[PWM_activeTargetIndex].count;
+	if (PWM_targets[0].count == PWM_tickCount ||
+		PWM_targets[PWM_PINS_NUMBER].count == PWM_tickCount) {
+		if (!PWM_tickCount) {
+			PWM_OUTPUT_PORT |= PWM_masks[PWM_targets[0].mask];
+		} else if (!(PWM_tickCount%PWM_LEVELS_NUMBER)) {
+			PWM_OUTPUT_PORT &= ~PWM_masks[PWM_targets[0].mask];				
+		} else {
+			PWM_OUTPUT_PORT ^= PWM_masks[PWM_targets[0].mask];
+		}
 	}
+	// do PWM switch stuff and select next switch target
+	if (PWM_targets[1].count == PWM_tickCount ||
+		PWM_targets[PWM_PINS_NUMBER + 1].count == PWM_tickCount) {
+		if (!PWM_tickCount) {
+			PWM_OUTPUT_PORT |= PWM_masks[PWM_targets[1].mask];
+		} else if (!(PWM_tickCount%PWM_LEVELS_NUMBER)) {
+			PWM_OUTPUT_PORT &= ~PWM_masks[PWM_targets[1].mask];				
+		} else {
+			PWM_OUTPUT_PORT ^= PWM_masks[PWM_targets[1].mask];
+		}
+	}		
 
 	// update timer tick counts
 	PWM_tickCount = (PWM_tickCount + 1)%(2*PWM_LEVELS_NUMBER);
@@ -108,44 +122,18 @@ void PWM_timerHandle(void) interrupt 1 using 2
 
 uint8_t PWM_setPinSignalDensity(uint8_t density, uint8_t pinNumber)
 {
-	uint8_t i, count = PWM_LEVELS_NUMBER - density;
-	uint8_t oldPosition = 0;
-	uint8_t newPosition = 0;
-	PWM_Target_t target;
+	uint8_t count = PWM_LEVELS_NUMBER - density;
 
-	target.count = count;
-	target.mask = pinNumber;
-	//target.active = 1;
-
-	for (i = 0; i < PWM_PINS_NUMBER; i++) {
-		// look for unused target slot and initialize it
-		if (PWM_targetsConfig[i].count > count) {
-			newPosition = i;
-		}
-
-		if (PWM_targetsConfig[i].mask == pinNumber) {
-			oldPosition = i;
-		}
-	}
-
-	if (oldPosition > newPosition) {
-		for (i = oldPosition; i > newPosition; i--) {
-			PWM_targetsConfig[i] = PWM_targetsConfig[i - 1];
-		}
-	} else if (oldPosition < newPosition) {
-		for (i = oldPosition; i < newPosition; i++) {
-			PWM_targetsConfig[i] = PWM_targetsConfig[i + 1];
-		}
-	} else {
-		i = oldPosition;
-	}
-
-	PWM_targetsConfig[i] = target;
-
-	for (i = 0; i < PWM_PINS_NUMBER; i++) {
-		target = PWM_targetsConfig[PWM_PINS_NUMBER - i - 1];
-		target.count = 2*PWM_LEVELS_NUMBER - target.count;
-		memcpy(PWM_targetsConfig + PWM_PINS_NUMBER + i, &target, sizeof(target));
+	if (pinNumber == 0) {
+		// first pin is going to be updated
+		PWM_targetsConfig[0].count = count;
+		PWM_targetsConfig[2].count = (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
+		PWM_targetsConfig[0].mask = 0;
+	} else if (pinNumber == 1) {
+		// second pin is going to be updated
+		PWM_targetsConfig[1].count = count;
+		PWM_targetsConfig[3].count = (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
+		PWM_targetsConfig[1].mask = 1;
 	}
 
 	PWM_updateIsRequired = 1;
