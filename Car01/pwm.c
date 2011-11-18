@@ -31,32 +31,24 @@
 
 static const uint8_t code PWM_masks[] =	{ 0x01, 0x02 };
 
-typedef struct {
-	uint8_t count:5;
-	uint8_t mask:3;
-} PWM_Target_t;
+static uint8_t PWM_pin1Up;
+static uint8_t PWM_pin1Down;
+static uint8_t PWM_pin2Up;
+static uint8_t PWM_pin2Down;
 
-static PWM_Target_t PWM_targets[2*PWM_PINS_NUMBER];
-static PWM_Target_t PWM_targetsConfig[2*PWM_PINS_NUMBER];
+static uint8_t PWM_pin1UpCfg;
+static uint8_t PWM_pin1DownCfg;
+static uint8_t PWM_pin2UpCfg;
+static uint8_t PWM_pin2DownCfg;
 
 static uint8_t PWM_tickCount = 0;
-static uint8_t PWM_nextSwitchCount = 0;
-
-static uint8_t PWM_activeTargetIndex = 0;
 static bit PWM_updateIsRequired = 0;
 
 /* Initialize PWM source based on timer 0 */
 void PWM_Init(void)
 {
-	uint8_t i = 0;
-	for (; i < PWM_PINS_NUMBER; i++) {
-//		PWM_targets[i].active = 0;
-	}
-
 	// set PWM stuf
 	PWM_tickCount = 0;
-	PWM_nextSwitchCount = 0;
-	PWM_activeTargetIndex = 0;
 	PWM_updateIsRequired = 0;
 
 	// setup timer 0 as 16-bit timer
@@ -84,35 +76,28 @@ void PWM_timerHandle(void) interrupt 1 using 2
 
 	if (!PWM_tickCount&&PWM_updateIsRequired) {
 		// here config updates should be applied
-		uint8_t i;
-		for (i = 0; i < 2*PWM_PINS_NUMBER; i++) {
-			PWM_targets[i] = PWM_targetsConfig[i];
-		}
+		PWM_pin1Up = PWM_pin1UpCfg;
+		PWM_pin1Down = PWM_pin1DownCfg;
+		PWM_pin2Up = PWM_pin2UpCfg;
+		PWM_pin2Down = PWM_pin2DownCfg;
+
 		PWM_updateIsRequired = 0;
 	}
 	
 	// do PWM switch stuff and select next switch target
-	if (PWM_targets[0].count == PWM_tickCount ||
-		PWM_targets[PWM_PINS_NUMBER].count == PWM_tickCount) {
-		if (!PWM_tickCount) {
-			PWM_OUTPUT_PORT |= PWM_masks[PWM_targets[0].mask];
-		} else if (!(PWM_tickCount%PWM_LEVELS_NUMBER)) {
-			PWM_OUTPUT_PORT &= ~PWM_masks[PWM_targets[0].mask];				
-		} else {
-			PWM_OUTPUT_PORT ^= PWM_masks[PWM_targets[0].mask];
-		}
+	if ((PWM_tickCount == PWM_pin1Up) &&
+		(PWM_tickCount != PWM_LEVELS_NUMBER)) {
+		PWM_OUTPUT_PORT |= 0x01;
+	} else if (PWM_tickCount == PWM_pin1Down) {
+		PWM_OUTPUT_PORT &= 0xFE;				
 	}
 	// do PWM switch stuff and select next switch target
-	if (PWM_targets[1].count == PWM_tickCount ||
-		PWM_targets[PWM_PINS_NUMBER + 1].count == PWM_tickCount) {
-		if (!PWM_tickCount) {
-			PWM_OUTPUT_PORT |= PWM_masks[PWM_targets[1].mask];
-		} else if (!(PWM_tickCount%PWM_LEVELS_NUMBER)) {
-			PWM_OUTPUT_PORT &= ~PWM_masks[PWM_targets[1].mask];				
-		} else {
-			PWM_OUTPUT_PORT ^= PWM_masks[PWM_targets[1].mask];
-		}
-	}		
+	if ((PWM_tickCount == PWM_pin2Up) &&
+		(PWM_tickCount != PWM_LEVELS_NUMBER)) {
+		PWM_OUTPUT_PORT |= 0x02;
+	} else if (PWM_tickCount == PWM_pin2Down) {
+		PWM_OUTPUT_PORT &= 0xFD;				
+	}
 
 	// update timer tick counts
 	PWM_tickCount = (PWM_tickCount + 1)%(2*PWM_LEVELS_NUMBER);
@@ -120,20 +105,18 @@ void PWM_timerHandle(void) interrupt 1 using 2
 	PWM_OUTPUT_PORT ^= 0x80;
 }
 
-uint8_t PWM_setPinSignalDensity(uint8_t density, uint8_t pinNumber)
+void PWM_setPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor)
 {
-	uint8_t count = PWM_LEVELS_NUMBER - density;
+	uint8_t count = PWM_LEVELS_NUMBER - onOffFactor;
 
 	if (pinNumber == 0) {
 		// first pin is going to be updated
-		PWM_targetsConfig[0].count = count;
-		PWM_targetsConfig[2].count = (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
-		PWM_targetsConfig[0].mask = 0;
+		PWM_pin1UpCfg = count;
+		PWM_pin1DownCfg = (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
 	} else if (pinNumber == 1) {
 		// second pin is going to be updated
-		PWM_targetsConfig[1].count = count;
-		PWM_targetsConfig[3].count = (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
-		PWM_targetsConfig[1].mask = 1;
+		PWM_pin2UpCfg = count;
+		PWM_pin2DownCfg =  (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
 	}
 
 	PWM_updateIsRequired = 1;

@@ -31,6 +31,6 @@ void PWM_Init(void);
  *						have to be set to '1' and all other bits - to '0';
  *						also it's used to clear the target when outPort
  */
-uint8_t PWM_setPinSignalDensity(uint8_t density, uint8_t outPortMask);
+void PWM_setPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor);
 
 #endif
