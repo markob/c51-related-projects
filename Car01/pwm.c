@@ -61,8 +61,6 @@ void PWM_Init(void)
 /* All PWM routine functionality is embedded to the PWM timer ISR */
 void PWM_timerHandle(void) interrupt 1 using 2	 
 {
-	PWM_OUTPUT_PORT ^= 0x80;
-
 	// restart timer
 	TH0 = PWM_TIMER0_REG_TH;
 	TL0 = PWM_TIMER0_REG_TL;
@@ -96,8 +94,6 @@ void PWM_timerHandle(void) interrupt 1 using 2
 
 	// update timer tick counts
 	PWM_tickCount = (PWM_tickCount + 1)%(2*PWM_LEVELS_NUMBER);
-
-	PWM_OUTPUT_PORT ^= 0x80;
 }
 
 void PWM_setPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor)

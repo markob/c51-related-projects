@@ -27,7 +27,7 @@ void main(void)
 		// input command processing
 		ProcessCommand();
 
-		//UART_SendByte('K');
+		UART_SendByte('K');
 	}
 }
 
