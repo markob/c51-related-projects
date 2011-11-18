@@ -46,11 +46,11 @@ void UART_Init(void)
 static void UART_eventHandler(void) interrupt 4 using 3
 {
 	if (RI) {
-		// if input queue is full we unable to receive any data
+		// if input queue is full we are unable to receive any data
 		if (UART_isInputQueueFull) return;
 		// clear received flag to switch the UART to the ready state
 		RI = 0;
-		// store received byte to the input queue
+		// store received byte in the input queue
 		UART_inputQueue[UART_inputQueueWriteIndex++] = SBUF;
 		UART_inputQueueWriteIndex %= UART_INPUT_QUEUE_SIZE;
 		if (UART_inputQueueWriteIndex == UART_inputQueueReadIndex) {
@@ -70,10 +70,10 @@ static void UART_eventHandler(void) interrupt 4 using 3
 
 void UART_SendByte(uint8_t byte)
 {
-	// check uthe output queue state: it requires additional processing when it's empty
+	// check the output queue state: it requires additional processing when it's empty
 	bit isQueueEmpty = !UART_isOutputQueueFull && (UART_outputQueueWriteIndex == UART_outputQueueReadIndex);
 	
-	// put byte to send to the output queue
+	// put byte to send in the output queue
 	while (UART_isOutputQueueFull);
 	UART_outputQueue[UART_outputQueueWriteIndex++] = byte;
 	UART_outputQueueWriteIndex %= UART_OUTPUT_QUEUE_SIZE;
