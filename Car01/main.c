@@ -20,9 +20,12 @@ void main(void)
 	PWM_setPinOnOffFactor(0, 1);
 	PWM_setPinOnOffFactor(1, 15);
 
+	// start PWM
+	PWM_Start();
+
 	while (TRUE) {
 		// input command processing
-		//ProcessCommand();
+		ProcessCommand();
 
 		//UART_SendByte('K');
 	}

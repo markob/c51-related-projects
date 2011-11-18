@@ -8,13 +8,13 @@
  * Actually this algorithm behavior is the same as hardware implemented	'Phase
  * Correct PWM' on AVRs. However, a few words should be said about modulation
  * frequency and so on. According to different articles about PWM and
- * electromotor control, the optimal modulation frequency depands on a certain
+ * electromotor control, the optimal modulation frequency depends on a certain
  * motor characteristics and on switching keys optimal frequency. From the one
  * side, for motor higher frequency is better, but switching keys has limited
  * frequency and with higher frequency they becames inefective or not working
  * at all.
  * So, according to previous paragraph and actual at89c2051/at89c4051 hw
- * limitations, was selected about 1 kHz modulation frequency. Please keep in
+ * limitations, was selected about 100 Hz modulation frequency. Please keep in
  * mind that industrial PWM regulators mostly provides PWM modulation in the
  * range from 1 to 8 kHz.
  * Another thing should be keep in mind here: PWM module resolution. Here it's
@@ -26,10 +26,6 @@
 
 #define PWM_TIMER0_REG_TH ((0xFFFF - CRYSTAL_FREQUENCY/3200/12 + 1)/256)
 #define PWM_TIMER0_REG_TL ((0xFFFF - CRYSTAL_FREQUENCY/3200/12 + 1)%256)
-
-#define PWM_LEVELS_NUMBER 16
-
-static const uint8_t code PWM_masks[] =	{ 0x01, 0x02 };
 
 static uint8_t PWM_pin1Up;
 static uint8_t PWM_pin1Down;
@@ -60,7 +56,6 @@ void PWM_Init(void)
 	PT0 = 1;
 	EA  = 1;
 	ET0 = 1;
-	TR0 = 1;
 }
 
 /* All PWM routine functionality is embedded to the PWM timer ISR */
@@ -87,16 +82,16 @@ void PWM_timerHandle(void) interrupt 1 using 2
 	// do PWM switch stuff and select next switch target
 	if ((PWM_tickCount == PWM_pin1Up) &&
 		(PWM_tickCount != PWM_LEVELS_NUMBER)) {
-		PWM_OUTPUT_PORT |= 0x01;
+		PWM_OUTPUT_PORT |= PWM_PIN1_MASK;
 	} else if (PWM_tickCount == PWM_pin1Down) {
-		PWM_OUTPUT_PORT &= 0xFE;				
+		PWM_OUTPUT_PORT &= PWM_PIN1_IMASK;				
 	}
 	// do PWM switch stuff and select next switch target
 	if ((PWM_tickCount == PWM_pin2Up) &&
 		(PWM_tickCount != PWM_LEVELS_NUMBER)) {
-		PWM_OUTPUT_PORT |= 0x02;
+		PWM_OUTPUT_PORT |= PWM_PIN2_MASK;
 	} else if (PWM_tickCount == PWM_pin2Down) {
-		PWM_OUTPUT_PORT &= 0xFD;				
+		PWM_OUTPUT_PORT &= PWM_PIN2_IMASK;				
 	}
 
 	// update timer tick counts
@@ -119,5 +114,6 @@ void PWM_setPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor)
 		PWM_pin2DownCfg =  (2*PWM_LEVELS_NUMBER - count)%(2*PWM_LEVELS_NUMBER);
 	}
 
+	// set update required flag
 	PWM_updateIsRequired = 1;
 }
