@@ -28,6 +28,7 @@ void UART_Init(void)
 	TMOD |= 0x20;
 	// run timer 1
 	TR1	  = 1;
+	ES	  = 1;
 	EA    = 1;
 
 #if UART_USE_SYNC_API != 1
@@ -50,7 +51,7 @@ static void UART_eventHandler(void) interrupt 4 using 3
 		if (UART_isInputQueueFull) return;
 		// clear received flag to switch the UART to the ready state
 		RI = 0;
-		// store received byte in the input queue
+		// store a received byte in the input queue
 		UART_inputQueue[UART_inputQueueWriteIndex++] = SBUF;
 		UART_inputQueueWriteIndex %= UART_INPUT_QUEUE_SIZE;
 		if (UART_inputQueueWriteIndex == UART_inputQueueReadIndex) {
@@ -59,7 +60,7 @@ static void UART_eventHandler(void) interrupt 4 using 3
 	} else {
 		// just clear transfer flag - set the UART to the ready state
 		TI = 0;
-		// sent next byte from the output queue if it's not empty
+		// sent a next byte from the output queue if it's not empty
 		if (UART_outputQueueWriteIndex != UART_outputQueueReadIndex) {
 			SBUF = UART_outputQueue[UART_outputQueueReadIndex++];
 			UART_outputQueueReadIndex %= UART_OUTPUT_QUEUE_SIZE;
