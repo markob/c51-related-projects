@@ -16,6 +16,7 @@ static uint8_t UART_outputQueue[UART_OUTPUT_QUEUE_SIZE];
 static uint8_t UART_outputQueueReadIndex = 0;
 static uint8_t UART_outputQueueWriteIndex = 0;
 static bit UART_isOutputQueueFull = 0;
+static bit UART_isOutputReady = 0;
 
 #endif
 
@@ -39,6 +40,7 @@ void UART_Init(void)
 	UART_outputQueueWriteIndex = 0;
 	UART_isInputQueueFull = 0;
 	UART_isOutputQueueFull = 0;
+	UART_isOutputReady = 1;
 #endif
 }
 
@@ -61,28 +63,29 @@ static void UART_eventHandler(void) interrupt 4 using 3
 		// just clear transfer flag - set the UART to the ready state
 		TI = 0;
 		// sent a next byte from the output queue if it's not empty
-		if (UART_outputQueueWriteIndex != UART_outputQueueReadIndex) {
+		if ((UART_outputQueueWriteIndex != UART_outputQueueReadIndex) ||
+			 UART_isOutputQueueFull) {
 			SBUF = UART_outputQueue[UART_outputQueueReadIndex++];
 			UART_outputQueueReadIndex %= UART_OUTPUT_QUEUE_SIZE;
 			UART_isOutputQueueFull = 0;
+			UART_isOutputReady = 0;
+		} else {
+			UART_isOutputReady = 1;
 		}
 	}
 }
 
 void UART_SendByte(uint8_t byte)
 {
-	// check the output queue state: it requires additional processing when it's empty
-	bit isQueueEmpty = !UART_isOutputQueueFull && (UART_outputQueueWriteIndex == UART_outputQueueReadIndex);
-	
 	// put byte to send in the output queue
 	while (UART_isOutputQueueFull);
 	UART_outputQueue[UART_outputQueueWriteIndex++] = byte;
 	UART_outputQueueWriteIndex %= UART_OUTPUT_QUEUE_SIZE;
-	if (isQueueEmpty) {
-		// queue is empty, so we need to invoke first transfer
-		TI = 1;
-	} else if (UART_outputQueueWriteIndex == UART_outputQueueReadIndex) {
+	if (UART_outputQueueWriteIndex == UART_outputQueueReadIndex) {
 		UART_isOutputQueueFull = 1;
+	} else if (UART_isOutputReady) {
+		UART_isOutputReady = 0;
+		TI = 1;
 	}
 }
 
