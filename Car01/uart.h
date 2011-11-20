@@ -18,7 +18,7 @@ uint8_t UART_RecvByte(void);
 #else
 
 /* Sends a byte to UART send buffer and immediately returns */
-void UART_SendByte(uint8_t byte);
+uint8_t UART_SendByte(uint8_t byte);
 
 /* Returns a number of bytes in the UART input queue in the low byte and
    one byte from this queue in the hight byte of the result */

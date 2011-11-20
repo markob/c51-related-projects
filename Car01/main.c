@@ -10,18 +10,15 @@ void main(void)
 	// init UART and send initial 'AT' to the BlueCore
 	UART_Init();
 	UART_SendByte('A');
-//	{uint8_t i; for (i = 0; i < 255; i++); }
 	UART_SendByte('T');
-//	{uint8_t i; for (i = 0; i < 255; i++); }
 
 	while (TRUE) {
 		// input command processing
 		ProcessCommand();
 
-		UART_SendByte('K');
-		UART_SendByte('L');
-		UART_SendByte('M');
-//		{uint8_t i; for (i = 0; i < 255; i++); }
+		while (UART_SendByte('K'));
+		while (UART_SendByte('L'));
+		while (UART_SendByte('M'));
 	}
 }
 
