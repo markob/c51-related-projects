@@ -55,7 +55,6 @@ static void UART_eventHandler(void) interrupt 4 using 3
 		if (UART_isInputQueueFull) return;
 		// clear received flag to switch the UART to the ready state
 		RI = 0;
-
 		// store a received byte in the input queue
 		UART_inputQueue[UART_inputQueueWriteIndex++] = SBUF;
 		UART_inputQueueWriteIndex %= UART_INPUT_QUEUE_SIZE;
