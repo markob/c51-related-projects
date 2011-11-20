@@ -14,11 +14,12 @@ void main(void)
 	UART_SendByte('T');
 
 	// initialize PWM module
-	//PWM_Init();
+	PWM_Init();
 
 	// setup PWM
-	//PWM_setPinSignalDensity(14, 0);
-	//PWM_setPinSignalDensity(2, 1);
+	PWM_SetPinOnOffFactor(0, 13);
+	PWM_SetPinOnOffFactor(1, 3);
+	PWM_Start();
 
 	while (TRUE) {
 		// input command processing
