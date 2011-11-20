@@ -9,22 +9,24 @@ uint8_t ProcessCommand(void);
 void main(void)
 {
 	// init UART and send initial 'AT' to the BlueCore
-//	UART_Init();
-//	UART_SendByte('A');
-//	UART_SendByte('T');
+	UART_Init();
+	UART_SendByte('A');
+	UART_SendByte('T');
 
 	// initialize PWM module
-	PWM_Init();
+	//PWM_Init();
 
 	// setup PWM
-	PWM_setPinSignalDensity(14, 0);
-	PWM_setPinSignalDensity(2, 1);
+	//PWM_setPinSignalDensity(14, 0);
+	//PWM_setPinSignalDensity(2, 1);
 
 	while (TRUE) {
 		// input command processing
-		//ProcessCommand();
+		ProcessCommand();
 
-		//UART_SendByte('K');
+		while (UART_SendByte('X'));
+		while (UART_SendByte('Y'));
+		while (UART_SendByte('Z'));
 	}
 }
 
