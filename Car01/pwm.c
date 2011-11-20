@@ -96,7 +96,7 @@ void PWM_timerHandle(void) interrupt 1 using 2
 	PWM_tickCount = (PWM_tickCount + 1)%(2*PWM_LEVELS_NUMBER);
 }
 
-void PWM_setPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor)
+void PWM_SetPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor)
 {
 	uint8_t count = PWM_LEVELS_NUMBER - onOffFactor;
 

@@ -41,7 +41,7 @@ void PWM_Init(void);
  *                      to '0' - 0 voltage output, 'PWM_LEVELS_NUMBER' - max
  *                      voltage output and other values are in the range.
  */
-void PWM_setPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor);
+void PWM_SetPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor);
 
 /* Starts the PWM timer - only after that PWM works */
 #define PWM_Start() { TR0 = 1; }
