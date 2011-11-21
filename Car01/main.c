@@ -4,7 +4,33 @@
 #include "uart.h"
 #include "pwm.h"
 
+#define MOVE_PIN  0
+#define STERN_PIN 1
+
+#define TURN_LEFT  1
+#define TURN_RIGHT 0
+
 uint8_t ProcessCommand(void);
+
+void DoTurn(uint8_t isTurnStart) {
+	// actually it seems that whole power isn't required to activate stern pin
+	// however it should be checked
+	if (isTurnStart) {
+		PWM_SetPinOnOffFactor(STERN_PIN, 12);
+	} else {
+		PWM_SetPinOnOffFactor(STERN_PIN, 0);
+	}
+}
+
+void DoTurn(uint8_t isTurnStart) {
+	// actually it seems that whole power isn't required to activate stern pin
+	// however it should be checked
+	if (isTurnStart) {
+		PWM_SetPinOnOffFactor(STERN_PIN, 12);
+	} else {
+		PWM_SetPinOnOffFactor(STERN_PIN, 0);
+	}
+}
 
 void main(void)
 {
