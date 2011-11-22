@@ -3,6 +3,7 @@
 
 #include "uart.h"
 #include "pwm.h"
+#include "car01.h"
 
 #define MOVE_PIN  0
 #define STERN_PIN 1
@@ -22,22 +23,14 @@ void DoTurn(uint8_t isTurnStart) {
 	}
 }
 
-void DoTurn(uint8_t isTurnStart) {
-	// actually it seems that whole power isn't required to activate stern pin
-	// however it should be checked
-	if (isTurnStart) {
-		PWM_SetPinOnOffFactor(STERN_PIN, 12);
-	} else {
-		PWM_SetPinOnOffFactor(STERN_PIN, 0);
-	}
-}
-
 void main(void)
 {
 	// init UART and send initial 'AT' to the BlueCore
 	UART_Init();
 	UART_SendByte('A');
 	UART_SendByte('T');
+
+	CAR_MOVE_FW();
 
 	// initialize PWM module
 	PWM_Init();
