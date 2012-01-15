@@ -29,6 +29,7 @@ def CalculateParamsForUART(oscFreq, desSpeed, doubleSpeed=False):
 		print "Unable to achieve desired transfer rate %d with Fosc=%d" % (desSpeed, oscFreq)
 	else:
 		error = (oscFreq/384.0/(256 - regVal)/doubleSpeedCoef - desSpeed)/desSpeed*100
+		print oscFreq/384.0/(256 - regVal)/doubleSpeedCoef
 		print "To get transfer rate %d using Fosc=%d use reg value %d, speed error is %.2f persents" % (desSpeed, oscFreq, regVal, error)
 		
 def CalculateParamsForUART2(oscFreq, desSpeed):
@@ -43,4 +44,4 @@ def ShowOscillatorsForUART(desSpeed, doubleSpeed=False):
 	for freq in oscillators:
 		CalculateParamsForUART(freq, desSpeed, doubleSpeed)
 
-ShowOscillatorsForUART(9600*4)
+ShowOscillatorsForUART(9600)
