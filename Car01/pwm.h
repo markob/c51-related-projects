@@ -49,8 +49,8 @@ void PWM_SetPinOnOffFactor(uint8_t pinNumber, uint8_t onOffFactor);
 /* Stops the PWM timer and resets output pins */
 #define PWM_Stop() { \
 	TR0 = 0; \
-	PWM_PUTPUT_PORT &= PWM_PIN1_IMASK; \
-	PWM_PUTPUT_PORT &= PWM_PIN2_IMASK; \
+	PWM_OUTPUT_PORT &= PWM_PIN1_IMASK; \
+	PWM_OUTPUT_PORT &= PWM_PIN2_IMASK; \
  }
 
 #endif
