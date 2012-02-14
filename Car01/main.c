@@ -25,6 +25,9 @@ void main(void)
 	PWM_Start();
 
 	while (TRUE) {
+		while (UART_SendByte('X'));
+		while (UART_SendByte('Y'));
+		while (UART_SendByte('Z'));
 		// input command processing
 		ProcessCommand();
 		while (UART_SendByte('K'));
