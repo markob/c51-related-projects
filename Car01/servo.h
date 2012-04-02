@@ -2,22 +2,25 @@
 #define SERVO_H_
 
 #include "types.h"
+#include "servo_config.h"
 
-#if (SERVO_OUT_NUM > 2) || (SERVO_OUT_NUM < 1)
+#if (SERVO_DEVICE_COUNT > 2) || (SERVO_DEVICE_COUNT < 1)
 #error Servo motor outputs number should be 1 or 2
 #endif
 
-#ifndef SERVO_OUT_PIN_0
+#ifndef SERVO_OUTPUT_PIN0
 #error Servo motor output  is not defined
 #endif
 
-#if (SERVO_OUT_NUM == 2) && (!defined(SERVO_OUT_PIN_1))
+sbit SERVO_outputPin0 = SERVO_OUTPUT_PIN0;
+
+#if (SERVO_DEVICE_COUNT == 2) && (!defined(SERVO_OUTPUT_PIN1))
 #error Second servo output pin is not defined
 
 #endif
 
 typedef void (*ClockCallback_t)(void);
 
-uint8_t ClockTimeout(uint16_t msTimeout, ClockCallback_t callback, bit isRepeating);
+uint8_t SERVO_SetAngle(uint8_t angle);
 
 #endif
