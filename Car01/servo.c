@@ -1,4 +1,4 @@
-#include "clock.h"
+#include "servo.h"
 
 #define CLOCK_TICKS_PER_10US (CRYPTAL_FREQUENCY/12/100000)
 
